@@ -1,0 +1,32 @@
+<div class="row" ng-controller="AnalysisCtrl" uploader="uploader">
+	<div class="col-md-3">
+		<div class="row well">
+			<div class="col-md-3">.wav only:</div>
+			<div class="col-md-2">
+				<input type="file" nv-file-select uploader="uploader" multiple>
+			</div>
+		</div>
+		<div class="row well ng-scope" ng-repeat="item in uploader.queue">
+			<div class="col-md-9 col-xs-9">
+				<strong><a ng-click="selectFile(item.file.name)">{{item.file.name}}</a></strong>
+			</div>
+			<button type="button" class="btn btn-link col-md-1 col-xs-1" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+				<span class="glyphicon" ng-class="{'glyphicon-cloud-upload':!item.isSuccess, 'glyphicon-ok':item.isSuccess}" aria-hidden="true">
+				</span>
+			</button>
+			<button class="btn btn-link col-md-1 col-xs-1" ng-click="item.remove()">
+				<span class="glyphicon glyphicon-remove aria-hidden="true"></span>
+			</button>
+		</div>
+	</div>
+	<div class="col-md-9">
+			<div class="panel panel-default" ng-repeat="graph in images.graphics| orderBy:'index'">
+				<div class="panel-heading">
+					<h4><a href="{{graph.path}}">{{graph.name}}</a></h4>
+				</div>
+				<div class="panel-body">
+					<img ng-src="{{graph.path}}" class="img-responsive" height="256">							
+				</div>
+			</div>
+	</div>
+</div>
