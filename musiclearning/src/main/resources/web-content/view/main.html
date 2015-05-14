@@ -1,0 +1,52 @@
+<div class="row" ng-controller="mCtrl" uploader="uploader">
+	<div class="col-md-12">
+		<div class="row well">
+			<div class="col-md-3">.wav only:</div>
+			<div class="col-md-6">
+				<input type="file" nv-file-select uploader="uploader">
+			</div>
+			<div class="col-md-3">
+				<button ng-click="uploader.queue[0].upload()" ng-disabled="uploader.queue[0].isReady || uploader.queue[0].isUploading || uploader.queue[0].isSuccess">upload</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="col-md-3" ng-show="guess">
+			Guess type is:
+		</div>
+		<div class="col-md-9">
+			<strong>{{guess}}</strong>
+		</div>
+		<br/>
+		<div class="col-md-3" ng-show="guess">
+			Actual type is:
+		</div>
+		<div class="col-md-9">
+			<strong>{{truth}}</strong>
+		</div>
+	</div>
+	<br/>
+	<br/>
+	<div class="container col-md-12" ng-repeat="(key,value) in possibility" style="height: 25px">
+			<div class = "label col-md-3" ng-class="{'label-success': truth==guess,'label-primary': truth!=guess,'label-info': truth==key&&truth!=guess, 'label-danger': key!=guess&&truth!=key}">
+				<span>{{key}}:</span>
+			</div>
+			<div class = "col-md-9" ng-class="{}">
+				<div class="progress progress-striped">
+                	<div class="progress-bar" ng-class="{'progress-bar-success': truth==guess,'progress-bar-info': truth==key&&truth!=guess, 'progress-bar-danger': key!=guess&&truth!=key}" style="width: {{value/sum*100}}%">
+                		<p><strong>{{value| number:2}}</strong>({{value/sum*100|number:0}}%)</p>
+                	</div>
+              	</div>
+				
+			</div>	
+	</div>
+	<div class="col-md-12" ng-show="guess">
+			<span class = "col-md-2 label label-success">True positive</span>
+			<span class = "col-md-1"></span>
+			<span class = "col-md-2 label label-danger">True negative</span>
+			<span class = "col-md-1"></span>
+			<span class = "col-md-2 label label-info">False positive</span>
+			<span class = "col-md-1"></span>
+			<span class = "col-md-2 label label-primary">False negative</span>
+	</div>
+</div>

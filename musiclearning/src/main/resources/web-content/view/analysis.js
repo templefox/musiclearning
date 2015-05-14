@@ -2,7 +2,7 @@ var analysisCtrl= function($scope, FileUploader, $http) {
     $scope.selectFile = function(fileName){
     	var name = { name:fileName};
     	console.info(name);
-    	$http.post('sys/analysisstate', name).success(
+    	$http.post('sys/analysisState', name).success(
     			function(response) {
     				$scope.images = response;
     			}

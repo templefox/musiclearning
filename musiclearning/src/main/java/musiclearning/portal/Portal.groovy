@@ -3,27 +3,39 @@ package musiclearning.portal
 import static spark.Spark.*;
 import groovy.json.JsonBuilder
 
+import java.awt.GraphicsConfiguration.DefaultBufferCapabilities;
 import java.rmi.server.LoaderHandler;
+import java.security.PublicKey;
 
 import org.apache.commons.io.FileUtils;
 
 import spark.Request;
 import spark.Response;
 import spark.ResponseTransformer;
+import spark.Spark;
 
 class Portal {
+		public static onLearning = false;
+		public static File getResourceFile(){
+			def userHome = System.getProperty("user.home");
+			File file = new File("${userHome}/musiclearning-resource/");
+			if (!file.exists()) {
+				file.mkdir();
+			}
+			return file;
+		}
 		
 		public static void main( String[] args )
 		{
 			staticFileLocation("/web-content");
+			externalStaticFileLocation(Portal.getResourceFile().getPath())
 			
 			port(8080);
 			get("/hello",{ req, res-> "Hello World"});
 			
-			File file = new File("src/main/resources/web-content/temp/");
+			File file = new File(Portal.getResourceFile(), "temp") ;
 			FileUtils.deleteDirectory(file);
 			file.mkdir();
-			
 			
 			def loader = new GroovyClassLoader();
 			

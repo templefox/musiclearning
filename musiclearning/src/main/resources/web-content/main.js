@@ -21,6 +21,10 @@ var init = function($scope,$http){
 		$scope.index = index;
 		$scope.current = getPage(index);
 	}
+	
+	$scope.main = function(){
+		$scope.current = "view/main.html";
+	}
 
 	$http.get('sys/module').success(
 		function(modules) {

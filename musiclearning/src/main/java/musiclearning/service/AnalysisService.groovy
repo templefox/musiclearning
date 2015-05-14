@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import javax.servlet.ServletRequest;
 
 import spark.Request
+import musiclearning.portal.Portal;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream
@@ -24,11 +25,11 @@ import com.musicg.graphic.GraphicRender;
 import com.musicg.processor.TopManyPointsProcessorChain;
 import com.musicg.wave.Wave;
 import com.musicg.wave.WaveHeader
-import com.musicg.wave.extension.Spectrogram;
+import com.musicg.wave.extension.Spectrogram
 
 class AnalysisService implements Service {
 	def id;
-	def suffix ="src/main/resources/web-content/temp/"
+	def suffix = Portal.getResourceFile().getPath() + "/temp/";
 	def images = [:];
 	@Override
 	def execute(Request req) {
@@ -60,10 +61,10 @@ class AnalysisService implements Service {
 			while(!isRefreshed){
 				
 				def http = new HTTPBuilder("http://127.0.0.1:8080/${value.path}");
-				
+				println http
 				http.request(GET) { r ->
 					response.success ={ isRefreshed = true }
-					response.'404' = {}
+					response.'404' = { rf -> println "${rf.statusLine}"}
 					response.failure = { rf -> println "${rf.statusLine}";}
 				}
 				Thread.sleep(500);
@@ -79,7 +80,7 @@ class AnalysisService implements Service {
 		FileUtils.writeByteArrayToFile(file, wav);
 		
 		Wave wave = new Wave(file.getAbsolutePath());
-		
+		println wave.toString()
 		file.delete();
 		
 		Spectrogram gram = wave.getSpectrogram();

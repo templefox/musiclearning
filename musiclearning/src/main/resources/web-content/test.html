@@ -1,0 +1,39 @@
+<html ng-app="Test">
+<head>
+<title>minimal demo</title>
+
+
+<script src="resources/lib/js/jquery-1.11.2.min.js"></script>
+<script src="resources/lib/js/angular.min.js"></script>
+<script src="resources/lib/js/bootstrap.min.js"></script>
+<script src="resources/lib/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
+<script src="resources/lib/js/angular-file-upload.min.js"></script>
+
+<script src="test/convnetjs_release/demo/util.js"></script>
+<script src="test/convnetjs_release/build/convnet-min.js"></script>
+
+<script src="Concurrent.Thread.js"></script>
+<script src="test.js"></script>
+
+</head>
+
+<body ng-controller="Init">
+		<button type="button" ng-click="start()">start</button>
+		<button type="button" ng-click="select()">click</button>
+		<button type="button" ng-click="stop()">stop</button>
+		<p>Accurate:<span ng-bind="acc"></span></p>
+		<p>Count:<span ng-bind="count"></span></p>
+		<p>Value:<span ng-bind="x"></span></p>
+		<p>Actual:<span ng-bind="y"></span> , Guess:<span ng-bind="guess"></span>. Result:{{y===guess}}</p>
+		
+		<div>
+			<ul>
+				<li ng-repeat="layer in net.layers">
+					<p>D: {{arrayToString(layer.out_act.w)}}</p>
+					<p>Dw: {{arrayToString(layer.out_act.dw)}}</p>
+				</li>
+			</ul>
+		
+		</div>
+</body>
+</html>

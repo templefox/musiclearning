@@ -1,0 +1,24 @@
+<div ng-controller="footprintCtrl">
+		<button type="button" ng-click="start()">start</button>
+		<button type="button" ng-click="select()">click</button>
+		<button type="button" ng-click="stop()">stop</button>
+		<button type="button" ng-click="generateNet()">generateNet</button>
+		<button type="button" ng-click="removeNet()">removeNet</button>
+		<p>Cost:<span ng-bind="cost"> s</span></p>
+		<p>Accurate:<span ng-bind="acc"></span></p>
+		<p>Count:<span ng-bind="count"></span></p>
+		<p>Value:<span ng-bind="x"></span></p>
+		<p>Actual:<span ng-bind="y"></span> , Guess:<span ng-bind="guess"></span>. Result:{{y===guess}}</p>
+		<h6>Net:</h6>
+		<p>{{nets}}</p>
+		
+		<!-- <div>
+			<ul>
+				<li ng-repeat="layer in net.layers">
+					<p>D: {{arrayToString(layer.out_act.w)}}</p>
+					<p>Dw: {{arrayToString(layer.out_act.dw)}}</p>
+				</li>
+			</ul>
+		
+		</div> -->
+</div>
