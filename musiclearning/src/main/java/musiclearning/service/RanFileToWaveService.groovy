@@ -13,19 +13,19 @@ class RanFileToWaveService implements Service{
 		File resource = Portal.getResourceFile();
 		File samples = new File(resource, "samples");
 		
-		def bound = 1000;
-		File file = samples.listFiles().find{new Random().nextInt(bound--)==0}
+		def bound = 200;
+		//File file = samples.listFiles().find{new Random().nextInt(bound--)==0}
 		
+		File file = samples.listFiles().find{(it.name.contains("class")||it.name.contains("hiphop"))&&(new Random().nextInt(bound--)==0)}
 		def res = [:]
 		
 		Wave wave = new Wave(new FileInputStream(file));
 		
-		float timestamp =wave.getBytes().length/wave.getWaveHeader().getBitsPerSample()*8 / wave.getWaveHeader().getSampleRate() /128;
+		float timestamp =wave.getBytes().length/wave.getWaveHeader().getBitsPerSample()*8 / wave.getWaveHeader().getSampleRate() /2048;
 
 		def result = WaveExtension.getReducedNormalizedAmplitudes(wave,timestamp);
 		
-		println result.pos.length;
-		println result.neg.length;
+		println result.length;
 		
 		def type_name = file.name.split("\\.")[0];
 		def type_id = LearningService.MUSIC_TYPE.get(type_name);

@@ -1,4 +1,4 @@
-var m= function($scope, FileUploader, $http) {
+var m= function($scope, FileUploader, $http,$interval) {
 
 	var uploader = $scope.uploader = new FileUploader({
         url: '/sys/classify'
@@ -10,6 +10,33 @@ var m= function($scope, FileUploader, $http) {
 //			return true;
 //		}
 //	});\
+	$scope.all = function(){
+		var promise;
+		$http.get("sys/AllAnalysis").success(
+				function(response){
+		            $scope.guess = response.type;
+		            $scope.truth = response.actual_type;
+		            $scope.possibility = response.possible;
+		            $scope.sum = response.sum;
+		            $interval.cancel(promise);
+				}
+		)
+		
+		promise = $interval(function(){
+			$http.get("sys/AllResult").success(
+				function(response){
+					$scope.guess = response.type;
+		            $scope.truth = response.actual_type;
+		            $scope.possibility = response.possible;
+		            $scope.sum = response.sum;
+				}
+			).error(
+					function(){
+						$interval.cancel(promise)
+					}
+			)
+		},5000)
+	}
 	uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
             console.info('onWhenAddingFileFailed', item, filter, options);
         };
@@ -55,4 +82,4 @@ var m= function($scope, FileUploader, $http) {
         console.info('uploader', uploader);
 };
 
-musicLearning.controller('mCtrl',['$scope','FileUploader',"$http",m]);
+musicLearning.controller('mCtrl',['$scope','FileUploader',"$http","$interval",m]);

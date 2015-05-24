@@ -49,27 +49,30 @@ class ClassifyService implements Service {
 		return null;
 	}
 	
-	private classify(def name, InputStream stream){
+	def classify(def name, InputStream stream){
 		//GetWave
 		File file = File.createTempFile("pre", null);
 		byte[] wav = IOUtils.toByteArray(stream);
 		FileUtils.writeByteArrayToFile(file, wav);
 		
+		classify0(name,file);
+	}
+
+	def classify0(def name ,File file) {
 		Wave wave = new Wave(file.getAbsolutePath());
-		
+
 		//Get
 		File resource = Portal.getResourceFile();
 		File samples = new File(resource, "samples");
-		
+
 		def waves = samples.listFiles().collect {it.getName()}.groupBy{ it.split("\\.")[0] };
-		
+		def actual_type;
 		def result = [:];
 		waves.each { type,value ->
-			println type
 			result."${type}" = 0;
 			if (name.contains(type)) {
-				println "hit"
-				result."${type}" = 0.04;
+				actual_type = type;
+				result."${type}" = 0.02;
 			}
 			def sub_value = [];
 			(1..10).each {
@@ -77,22 +80,24 @@ class ClassifyService implements Service {
 				sub_value << value.find{new Random().nextInt(num--)==0}
 			}
 			sub_value.each {
-				Wave c_wave = new Wave(samples.getAbsolutePath()+ "/${it}")			
+				Wave c_wave = new Wave(samples.getAbsolutePath()+ "/${it}")
 				def s = c_wave.getFingerprintSimilarity(wave);
-				result."${type}" += s.getSimilarity();
-			}			
+				if (s.getSimilarity()!=1) {
+					result."${type}" += s.getSimilarity();
+				}else{
+					result."${type}" += 0.15;
+				}
+			}
 		}
 		println result
 		def res = [:]
 		res.type = result.max { it.value }.key;
-		
+		res.actual_type = actual_type
 		res.sum = result.values().sum();
-		
+
 		res.possible = result
 
-		return res;
-		
-		
+		return res
 	}
 
 }

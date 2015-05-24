@@ -2,6 +2,8 @@ package musiclearning.portal
 
 import static spark.Spark.*;
 import groovy.json.JsonBuilder
+import groovyx.gpars.GParsExecutorsPool;
+import groovyx.gpars.GParsPool;
 
 import java.awt.GraphicsConfiguration.DefaultBufferCapabilities;
 import java.rmi.server.LoaderHandler;
@@ -27,6 +29,13 @@ class Portal {
 		
 		public static void main( String[] args )
 		{
+//		(1..1e8).each { println it}
+//			GParsPool.withPool {
+//				assert [1, 2, 3, 4, 5].everyParallel {it >1}
+//			}
+//			println "done"
+//			
+//			return
 			staticFileLocation("/web-content");
 			externalStaticFileLocation(Portal.getResourceFile().getPath())
 			
@@ -44,7 +53,6 @@ class Portal {
 				
 				try {
 					def module = req.params('module').capitalize();
-					println module;
 					return loader.loadClass("musiclearning.service.${module}Service").newInstance().execute(req);
 				} catch (Exception e) {
 					res.status(500)

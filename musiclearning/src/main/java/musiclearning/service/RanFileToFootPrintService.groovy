@@ -9,6 +9,7 @@ import musiclearning.extension.WaveExtension;
 
 class RanFileToFootPrintService implements Service{
 	private Random r = new Random();
+	private static  count = 54;
 	@Override
 	def execute(Request req) {
 		File resource = Portal.getResourceFile();
@@ -16,7 +17,12 @@ class RanFileToFootPrintService implements Service{
 		
 		
 		def bound = 1000;
-		File file = samples.listFiles().find{r.nextInt(bound--)==0}
+		//File file = samples.listFiles().find{r.nextInt(bound--)==0}
+		File file = samples.listFiles()[count]
+		count+=11;
+		if (count>=200) {
+			count%=200
+		}
 		
 		def res = [:]
 		
