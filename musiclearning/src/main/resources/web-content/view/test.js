@@ -1,7 +1,7 @@
 var about = function($scope,$interval){
-	$scope.acc = 0.1;
+	$scope.acc = 0;
 	$scope.count = 0;
-	
+	$scope.detail = false;
 	$scope.x;
 	$scope.y
 	var valAccWindow = new cnnutil.Window(100);
@@ -83,11 +83,11 @@ var about = function($scope,$interval){
 		
 		valAccWindow.add(yhat === label? 1:0);
 		
-		$scope.acc = cnnutil.f2t(valAccWindow.get_average());
+		$scope.acc = valAccWindow.get_average()<0?0:valAccWindow.get_average();
 		$scope.count++;
 
 		var str = $scope.arrayToString(vol.w);
-		$scope.x = str;
+		$scope.x = vol.w;
 		
 		$scope.y = label;
 		$scope.guess = yhat;
@@ -97,15 +97,28 @@ var about = function($scope,$interval){
 		console.log($scope.net);
 	}
 	
-	var inter;
+	$scope.inter = null;
 	$scope.start = function(){
-		if(inter != null) return;
-		inter = $interval($scope.click, 10);
+		if($scope.inter != null) return;
+		$scope.inter = $interval($scope.click, 10);
+	}
+	
+	$scope.getColor = function(v){
+		if(v===1){
+			return "#4C841F"
+		}else{
+			return "#641669"
+		}
+		
 	}
 	
 	$scope.stop = function(){
-		$interval.cancel(inter);
-		inter = null;
+		$interval.cancel($scope.inter);
+		$scope.inter = null;
+	}
+	
+	$scope.details = function(){
+		$scope.detail = !$scope.detail;
 	}
 }
 

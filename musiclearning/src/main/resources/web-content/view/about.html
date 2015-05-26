@@ -1,13 +1,34 @@
 <div ng-controller="About">
-		<button type="button" ng-click="start()">start</button>
-		<button type="button" ng-click="click()">click</button>
-		<button type="button" ng-click="stop()">stop</button>
-		<p>Accurate:<span ng-bind="acc"></span></p>
-		<p>Count:<span ng-bind="count"></span></p>
-		<p>Value:<span ng-bind="x"></span></p>
-		<p>Actual:<span ng-bind="y"></span> , Guess:<span ng-bind="guess"></span>. Result:{{y===guess}}</p>
-		
-		<div>
+		<div class="row">
+			<button type="button" style="margin:2px" class="btn btn-success col-md-1" ng-class="{'active':inter}" ng-click="start()">start</button>
+			<button type="button" style="margin:2px" class="btn btn-primary col-md-1" ng-click="stop()">stop</button>
+			<div class="col-md-1" style="padding:0px"></div>
+			<button type="button" style="margin:2px" class="btn btn-info col-md-1" ng-click="click()">click</button>
+			<button type="button" style="margin:2px" class="btn btn-info col-md-1" ng-click="details()">details</button>
+		</div>
+		<div class="row" style="margin-top:10px">
+			<h4 class="lead  col-md-3">Accurate: {{(acc*100)|number:2}}%</h4>
+			<div class="col-md-7">
+				<div class="progress progress-striped active" style="margin-top:12px">
+				  	<div class="progress-bar progress-bar-success" style="width: {{acc*100}}%"></div>
+				</div>
+			</div>	
+		</div>
+		<div class="row">
+			<h4 class="lead col-md-3">  Count: {{count}}</h4>
+		</div>
+		<div class="row">
+			<h4 class="lead col-md-1">Value: </h4>
+			<div class="col-md-1" style="margin-top:15px" ng-repeat="e in x track by $index">
+				<span class="badge" ng-style="{'background-color':getColor(e)}">{{e}}</span>
+			</div>
+		</div>
+		<div class="row" =>
+			<div class="col-md-6">
+				<h4 class="lead" ng-class="{'text-success':y===guess,'text-primary':y!=guess}">Actual: {{y}}  Guess: {{guess}}({{net.layers[6].out_act.w[guess]*100|number:2}}%) Result:{{y===guess}}</p>
+			</div>
+		</div>
+		<div ng-show="detail">
 			<ul>
 				<li ng-repeat="layer in net.layers">
 					<p>D: {{arrayToString(layer.out_act.w)}}</p>
