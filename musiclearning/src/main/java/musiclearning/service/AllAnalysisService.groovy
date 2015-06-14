@@ -25,7 +25,7 @@ class AllAnalysisService implements Service {
 			}
 		}
 		
-		GParsPool.withPool(50,handler) {
+		GParsPool.withPool(30,handler) {
 			samples.listFiles().eachParallel { File f->
 				if (!f.isDirectory()) {
 					def result = classifyService.classify0(f.name, f)

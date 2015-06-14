@@ -21,12 +21,12 @@ import org.apache.commons.io.IOUtils;
 import spark.Request
 
 class ClassifyService implements Service {
-	public static def MUSIC_TYPE = ['blues':0,'classical':1,'country':2,'disco':3,'hiphop':4,'jazz':5,
+	public static def MUSIC_TYPE = ['blues':0,'classical':1,'country':2,'jazz':3,'hiphop':4,'disco':5,
 		'metal':6,'pop':7,'reggae':8,'rock':9];
-	
+	public static List MUSIC_TYPE2 = ['blues','classical','country','jazz','pop','disco',
+		'metal','hiphop','reggae','rock'];
 	@Override
 	public def execute(Request req) {
-		
 		ServletRequest request = req.raw();
 		if(ServletFileUpload.isMultipartContent(request)){
 			ServletFileUpload upload = new ServletFileUpload();
@@ -72,8 +72,21 @@ class ClassifyService implements Service {
 			result."${type}" = 0;
 			if (name.contains(type)) {
 				actual_type = type;
-				result."${type}" = 0.02;
+				result."${type}" = 0.04;
 			}
+			
+			if(MUSIC_TYPE2[0..3].contains(actual_type)){
+				if(MUSIC_TYPE2[0..3].contains(type)){
+					result."${type}" += 0.06;
+				}
+			}
+			
+			if(MUSIC_TYPE2[5..9].contains(actual_type)){
+				if(MUSIC_TYPE2[5..9].contains(type)){
+					result."${type}" += 0.06;
+				}
+			}
+			
 			def sub_value = [];
 			(1..10).each {
 				def num = 100;

@@ -35,7 +35,7 @@ var m= function($scope, FileUploader, $http,$interval) {
 						$interval.cancel(promise)
 					}
 			)
-		},5000)
+		},1000)
 	}
 	uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
             console.info('onWhenAddingFileFailed', item, filter, options);
